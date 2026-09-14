@@ -76,3 +76,24 @@ def confirm_resolution(width: int, height: int, timeout: int = DEFAULT_TIMEOUT_S
     timer.invalidate()
 
     return response == NSAlertFirstButtonReturn
+
+
+def prompt_text(title: str, message: str, default_value: str = "") -> str | None:
+    """Shows a simple text-input dialog. Returns the entered text, or None
+    if the user cancelled.
+    """
+    alert = NSAlert.alloc().init()
+    alert.setMessageText_(title)
+    alert.setInformativeText_(message)
+    alert.addButtonWithTitle_("OK")
+    alert.addButtonWithTitle_("Cancelar")
+
+    field = NSTextField.alloc().initWithFrame_(NSMakeRect(0, 0, 260, 24))
+    field.setStringValue_(default_value)
+    alert.setAccessoryView_(field)
+    alert.window().setInitialFirstResponder_(field)
+
+    response = alert.runModal()
+    if response != NSAlertFirstButtonReturn:
+        return None
+    return str(field.stringValue()).strip()

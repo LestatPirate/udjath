@@ -8,7 +8,8 @@ from __future__ import annotations
 import rumps
 
 import display_manager as dm
-from confirm_dialog import confirm_resolution
+import display_naming as dn
+from confirm_dialog import confirm_resolution, prompt_text
 from known_resolutions import KNOWN_RESOLUTIONS
 
 
@@ -56,6 +57,12 @@ class ResolutionSwitcherApp(rumps.App):
                 if current is not None and (width, height) == (current.width, current.height):
                     item.state = 1
                 self.menu.add(item)
+            self.menu.add(
+                rumps.MenuItem(
+                    "    Renomear este ecrã...",
+                    callback=self._make_rename_handler(display.display_id),
+                )
+            )
             self.menu.add(None)
 
         self.menu.add(rumps.MenuItem("Atualizar lista de ecrãs", callback=lambda _: self.rebuild_menu()))
@@ -65,6 +72,12 @@ class ResolutionSwitcherApp(rumps.App):
     def _make_switch_handler(self, display_id: int, width: int, height: int):
         def handler(_sender):
             self.switch_resolution(display_id, width, height)
+
+        return handler
+
+    def _make_rename_handler(self, display_id: int):
+        def handler(_sender):
+            self.rename_display(display_id)
 
         return handler
 
@@ -97,6 +110,36 @@ class ResolutionSwitcherApp(rumps.App):
                 self._notify("Resolução revertida", previous_mode.label, "Voltou à resolução anterior.")
 
         self.rebuild_menu()
+
+    def rename_display(self, display_id: int):
+        current_name = dm.list_displays()
+        display = next((d for d in current_name if d.display_id == display_id), None)
+        default = display.name if display else ""
+
+        new_name = prompt_text(
+            "Renomear ecrã",
+            "Este nome fica guardado no sistema (visível em Definições > Ecrãs) "
+            "e só é aplicado depois de desligares e voltares a ligar o cabo do "
+            "monitor, ou de terminares sessão. Vai ser pedida a tua palavra-passe "
+            "de administrador.",
+            default_value=default,
+        )
+        if not new_name:
+            return
+
+        try:
+            dn.rename_display_permanently(display_id, new_name)
+        except Exception as exc:
+            rumps.alert(title="Falha ao renomear ecrã", message=str(exc))
+            return
+
+        rumps.alert(
+            title="Nome guardado",
+            message=(
+                f'"{new_name}" foi guardado para este ecrã. Desliga e volta a ligar '
+                "o cabo do monitor (ou termina sessão) para o veres em Definições > Ecrãs."
+            ),
+        )
 
     @staticmethod
     def _notify(title: str, subtitle: str, message: str):
