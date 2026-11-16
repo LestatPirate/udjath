@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="{{LANG}}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title data-pt>Udjath — Mudar a resolução do ecrã no Mac a partir da barra de menu (gratuita e livre)</title>
+<title data-en>Udjath — Switch display resolution on the Mac from the menu bar (free, open source)</title>
+<meta name="description" content="Udjath: app gratuita e de código aberto para a barra de menu do macOS que muda a resolução do ecrã, incluindo ultrawide 3440x1440 e modos HiDPI escondidos, com confirmação e reversão automática." data-pt>
+<meta name="description" content="Udjath is a free, open-source macOS menu bar app that switches display resolution, including ultrawide 3440x1440 and hidden HiDPI modes, with confirmation and automatic revert." data-en>
+<link rel="canonical" href="{{SELF}}">
+<link rel="alternate" hreflang="en" href="{{URL_EN}}">
+<link rel="alternate" hreflang="pt" href="{{URL_PT}}">
+<link rel="alternate" hreflang="x-default" href="{{URL_EN}}">
+<link rel="icon" href="{{BASE}}brand/UdjathLogo.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{SELF}}">
+<meta property="og:title" content="Udjath — a resolução do ecrã, na barra de menu" data-pt>
+<meta property="og:title" content="Udjath — display resolution, in the menu bar" data-en>
+<meta property="og:description" content="Muda a resolução do ecrã no Mac com um clique, com reversão automática. Local e gratuita (MIT)." data-pt>
+<meta property="og:description" content="Switch your Mac's display resolution in one click, with automatic revert. Local and free (MIT)." data-en>
+<meta property="og:image" content="https://lestatpirate.github.io/udjath/brand/UdjathLogo.png">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Udjath","operatingSystem":"macOS","applicationCategory":"UtilitiesApplication","softwareVersion":"{{VERSION}}","url":"{{SELF}}","downloadUrl":"{{ZIP}}","license":"https://opensource.org/license/mit","author":{"@type":"Person","name":"Alex Felizardo"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
+</script>
+<style>
+:root{
+  --bg:#0f1115;--bg2:#161a22;--card:#1b2029;--line:#2a3140;--text:#e8ebf1;--muted:#9aa3b5;
+  --accent:#c8962e;--accent2:#0e8f94;--warn:#f6b73c;--paypal:#0070BA;--maxw:1120px;
+}
+@media (prefers-color-scheme: light){
+  :root{--bg:#f6f7fb;--bg2:#ffffff;--card:#ffffff;--line:#e3e7ef;--text:#15181f;--muted:#5d6678;}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font:16px/1.55 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 20px}
+header.top{position:sticky;top:0;z-index:10;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:saturate(1.4) blur(12px);border-bottom:1px solid var(--line)}
+header.top .wrap{display:flex;align-items:center;gap:14px;height:58px}
+header.top img{width:30px;height:30px;border-radius:7px}
+header.top .brand{font-weight:700;letter-spacing:.18em}
+header.top nav{margin-left:auto;display:flex;gap:18px;align-items:center;font-size:14px}
+header.top nav a{color:var(--text);opacity:.85}
+.lang{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
+.lang a{color:var(--text);padding:5px 12px;font-size:13px;opacity:.7}
+.lang a:hover{text-decoration:none;opacity:1}
+.lang a.on{background:var(--accent);color:#fff;opacity:1}
+.alt .card h3{margin-top:0}
+.alt .card p+p{margin-top:10px}
+.alt .card p strong{color:var(--text)}
+@media (max-width:720px){header.top nav a.nl{display:none}}
+.hero{padding:72px 0 36px;text-align:center}
+.hero img.logo{width:112px;height:112px;border-radius:26px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.hero h1{font-size:clamp(34px,6vw,60px);letter-spacing:.22em;margin:22px 0 8px}
+.hero .tag{font-size:clamp(20px,3vw,28px);font-weight:600;margin:0}
+.hero .sub{color:var(--muted);font-size:18px;margin:10px auto 26px;max-width:640px}
+.cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:12px;font-weight:600;border:1px solid var(--line);background:var(--card);color:var(--text)}
+.btn:hover{text-decoration:none;filter:brightness(1.08)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.btn.paypal{background:var(--paypal);border-color:var(--paypal);color:#fff}
+.hero .note{color:var(--muted);font-size:13px;margin-top:12px}
+.shot{display:block;max-width:100%;border-radius:14px;border:1px solid var(--line);box-shadow:0 24px 60px rgba(0,0,0,.35);margin:36px auto 0}
+section{padding:64px 0}
+section h2{font-size:clamp(26px,4vw,38px);margin:0 0 10px;text-align:center}
+section p.lead{text-align:center;color:var(--muted);max-width:720px;margin:0 auto 36px;font-size:17px}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px}
+.card .ic{font-size:28px;line-height:1}
+.card h3{margin:12px 0 6px;font-size:18px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.one{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+table.cmp{width:100%;border-collapse:collapse;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
+table.cmp th,table.cmp td{padding:14px 16px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+table.cmp th{font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+table.cmp tr:last-child td{border-bottom:0}
+table.cmp td.ok{text-align:center;font-size:20px;color:var(--accent2);white-space:nowrap}
+table.cmp td.apps{color:var(--muted);font-size:14px}
+table.cmp td strong{font-weight:600}
+.uniq{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.uniq .card{display:flex;gap:14px}
+.uniq .n{flex:0 0 36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:grid;place-items:center;font-weight:700}
+.uniq h3{margin:0 0 4px;font-size:17px}
+.two{display:grid;gap:28px;grid-template-columns:1fr 1fr;align-items:center}
+@media (max-width:860px){.two{grid-template-columns:1fr}}
+.two img{width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:0 14px 40px rgba(0,0,0,.3)}
+.two ul{margin:0;padding-left:20px;color:var(--muted)}
+.two li{margin:6px 0}
+.two li strong{color:var(--text)}
+.new .card h3{font-size:16px}
+.steps{counter-reset:s;display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.steps .card{position:relative;padding-top:26px}
+.steps .card::before{counter-increment:s;content:counter(s);position:absolute;top:-14px;left:18px;width:28px;height:28px;border-radius:50%;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:700;font-size:14px}
+code{background:var(--bg2);border:1px solid var(--line);border-radius:6px;padding:1px 6px;font-size:14px}
+.support{text-align:center;background:var(--bg2);border:1px solid var(--line);border-radius:20px;padding:34px 24px;max-width:720px;margin:0 auto}
+.support h2{margin-bottom:6px}
+.support p{color:var(--muted);margin:0 0 18px}
+footer{border-top:1px solid var(--line);padding:30px 0 50px;color:var(--muted);font-size:14px;text-align:center}
+footer a{color:var(--muted);text-decoration:underline}
+.sm{font-size:13px;color:var(--muted)}
+.menu{max-width:400px;margin:40px auto 0;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 24px 60px rgba(0,0,0,.35);padding:8px;font-size:14px}
+.menu div{padding:5px 12px;border-radius:6px;white-space:nowrap}
+.menu .h{color:var(--muted);font-weight:600}
+.menu .on{background:var(--accent);color:#fff}
+.menu .off{color:var(--muted);opacity:.6}
+.menu hr{border:0;border-top:1px solid var(--line);margin:6px 8px}
+.icons{display:flex;gap:26px;justify-content:center;flex-wrap:wrap}
+.icons figure{margin:0;text-align:center;color:var(--muted);font-size:14px}
+.icons img{width:128px;height:128px;display:block;margin-bottom:6px}
+.other{display:flex;gap:18px;align-items:center;max-width:720px;margin:0 auto}
+.other img{width:72px;height:72px;border-radius:16px}
+.other h3{margin:0 0 4px}
+.other p{margin:0;color:var(--muted)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <img src="{{BASE}}brand/UdjathLogo.png" alt="">
+    <span class="brand">UDJATH</span>
+    <nav>
+      <a class="nl" href="#funcoes"><span data-pt>Funcionalidades</span><span data-en>Features</span></a>
+      <a class="nl" href="#icones"><span data-pt>Ícones</span><span data-en>Icons</span></a>
+      <a class="nl" href="#instalar"><span data-pt>Instalar</span><span data-en>Install</span></a>
+      <a href="https://github.com/LestatPirate/udjath">GitHub</a>
+      <span class="lang"><a href="{{HREF_PT}}" class="{{ON_PT}}" hreflang="pt" onclick="keep('pt')">PT</a><a href="{{HREF_EN}}" class="{{ON_EN}}" hreflang="en" onclick="keep('en')">EN</a></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="hero wrap">
+  <img class="logo" src="{{BASE}}brand/UdjathLogo.png" alt="Udjath" style="box-shadow:none;border-radius:0">
+  <h1>U D J A T H</h1>
+  <p class="tag"><span data-pt>A resolução do ecrã, na barra de menu.</span><span data-en>Display resolution, in the menu bar.</span></p>
+  <p class="sub">
+    <span data-pt>Mude a resolução de qualquer ecrã do Mac com um clique, incluindo ultrawide e modos que o macOS esconde. Se a imagem ficar mal, a app reverte sozinha. Sem conta, sem rede, sem telemetria. Software livre (MIT).</span><span data-en>Switch the resolution of any Mac display in one click, including ultrawide and modes macOS hides. If the picture looks wrong, the app reverts by itself. No account, no network, no telemetry. Free software (MIT).</span>
+  </p>
+  <div class="cta">
+    <a class="btn primary" href="{{ZIP}}">⬇︎ <span data-pt>Descarregar para macOS</span><span data-en>Download for macOS</span></a>
+    <a class="btn" href="https://github.com/LestatPirate/udjath"><span data-pt>Código no GitHub</span><span data-en>Source on GitHub</span></a>
+    <a class="btn paypal" href="https://paypal.me/lestat013">♥ <span data-pt>Apoiar no PayPal</span><span data-en>Support on PayPal</span></a>
+  </div>
+  <p class="note"><span data-pt>Apple Silicon e Intel · versão {{VERSION}} · <a href="https://github.com/LestatPirate/udjath/releases">todas as versões</a></span><span data-en>Apple Silicon and Intel · version {{VERSION}} · <a href="https://github.com/LestatPirate/udjath/releases">all releases</a></span></p>
+  <div class="menu">
+    <div class="h"><span data-pt>Ecrã externo — atual: 3440 x 1440</span><span data-en>External display — current: 3440 x 1440</span></div>
+    <div>&nbsp;&nbsp;&nbsp;1920 x 1080</div>
+    <div>&nbsp;&nbsp;&nbsp;2560 x 1080</div>
+    <div>&nbsp;&nbsp;&nbsp;2560 x 1440</div>
+    <div class="on">✓ 3440 x 1440</div>
+    <div class="off">&nbsp;&nbsp;&nbsp;3840 x 2160 &nbsp;<span data-pt>(não disponível)</span><span data-en>(not available)</span></div>
+    <div>&nbsp;&nbsp;&nbsp;<span data-pt>Renomear este ecrã...</span><span data-en>Rename this display...</span></div>
+    <hr>
+    <div><span data-pt>Atualizar lista de ecrãs</span><span data-en>Refresh display list</span></div>
+    <div><span data-pt>Ícone</span><span data-en>Icon</span> &nbsp;▸</div>
+  </div>
+  <p class="note"><span data-pt>Ilustração do menu. A interface da app está em português.</span><span data-en>Illustration of the menu. The app's interface is in Portuguese.</span></p>
+</div>
+
+<section class="one" id="funcoes">
+  <div class="wrap">
+    <h2><span data-pt>O que faz</span><span data-en>What it does</span></h2>
+    <p class="lead"><span data-pt>Uma coisa só, bem feita: trocar de resolução sem abrir as Definições do Sistema.</span><span data-en>One thing, done well: switching resolution without opening System Settings.</span></p>
+    <div class="grid">
+      <div class="card"><div class="ic">🖥️</div><h3><span data-pt>Todos os ecrãs, um menu</span><span data-en>Every display, one menu</span></h3><p><span data-pt>Lista o ecrã interno e os externos, com a resolução atual assinalada e as resoluções mais comuns à distância de um clique.</span><span data-en>Lists the built-in and external displays, with the current resolution checked and the most common resolutions one click away.</span></p></div>
+      <div class="card"><div class="ic">↔️</div><h3><span data-pt>Ultrawide incluído</span><span data-en>Ultrawide included</span></h3><p><span data-pt>2560x1080, 3440x1440, 3840x1600 e 5120x1440 estão na lista. As que o ecrã ligado não suporta aparecem desativadas.</span><span data-en>2560x1080, 3440x1440, 3840x1600 and 5120x1440 are on the list. Those the connected display does not support are shown disabled.</span></p></div>
+      <div class="card"><div class="ic">🔍</div><h3><span data-pt>Modos HiDPI escondidos</span><span data-en>Hidden HiDPI modes</span></h3><p><span data-pt>Mostra as resoluções escaladas que o macOS não apresenta por omissão em Definições → Ecrãs.</span><span data-en>Shows the scaled resolutions macOS does not present by default in Settings → Displays.</span></p></div>
+      <div class="card"><div class="ic">⏱️</div><h3><span data-pt>Reversão automática</span><span data-en>Automatic revert</span></h3><p><span data-pt>Depois de mudar, uma contagem de 15 segundos pede confirmação. Sem resposta, volta à resolução anterior, como o próprio macOS.</span><span data-en>After a change, a 15-second countdown asks for confirmation. With no answer, it returns to the previous resolution, like macOS itself.</span></p></div>
+      <div class="card"><div class="ic">✏️</div><h3><span data-pt>Renomear um ecrã</span><span data-en>Rename a display</span></h3><p><span data-pt>Grava um nome à sua escolha ao nível do sistema, visível em Definições → Ecrãs. Pede a palavra-passe de administrador pelo diálogo do macOS.</span><span data-en>Saves a name of your choice at system level, visible in Settings → Displays. It asks for the administrator password through the macOS dialog.</span></p></div>
+      <div class="card"><div class="ic">🔒</div><h3><span data-pt>100 % local</span><span data-en>100% local</span></h3><p><span data-pt>Não faz pedidos de rede, não tem conta nem telemetria. O código é aberto.</span><span data-en>It makes no network requests and has no account or telemetry. The code is open.</span></p></div>
+    </div>
+    <p class="sm" style="text-align:center;margin-top:18px"><span data-pt>O Udjath só mostra resoluções que o macOS considera suportadas pelo ecrã ligado. Não força modos que o monitor não anuncia.</span><span data-en>Udjath only shows resolutions macOS considers supported by the connected display. It does not force modes the monitor does not advertise.</span></p>
+  </div>
+</section>
+
+<section id="icones">
+  <div class="wrap">
+    <h2><span data-pt>O Olho de Hórus, à sua escolha</span><span data-en>The Eye of Horus, your choice</span></h2>
+    <p class="lead"><span data-pt>Três ícones para a app e dois para a barra de menu, no menu Ícone.</span><span data-en>Three icons for the app and two for the menu bar, in the Icon menu.</span></p>
+    <div class="icons">
+      <figure><img src="{{BASE}}brand/UdjathLogo.png" alt=""><span data-pt>Clássico</span><span data-en>Classic</span></figure>
+      <figure><img src="{{BASE}}brand/AppIcon-Ultrawide.png" alt="">Ultrawide</figure>
+      <figure><img src="{{BASE}}brand/AppIcon-Turquesa.png" alt=""><span data-pt>Turquesa</span><span data-en>Turquoise</span></figure>
+    </div>
+  </div>
+</section>
+
+<section class="one" id="instalar">
+  <div class="wrap">
+    <h2><span data-pt>Instalar</span><span data-en>Install</span></h2>
+    <p class="lead"><span data-pt>Apple Silicon e Intel.</span><span data-en>Apple Silicon and Intel.</span></p>
+    <div class="steps">
+      <div class="card"><h3><span data-pt>Descarregar</span><span data-en>Download</span></h3><p><span data-pt>Descarregue <a href="{{ZIP}}"><code>Udjath-{{VERSION}}.zip</code></a>, descomprima e arraste <code>Udjath.app</code> para Aplicações.</span><span data-en>Download <a href="{{ZIP}}"><code>Udjath-{{VERSION}}.zip</code></a>, unzip and drag <code>Udjath.app</code> to Applications.</span></p></div>
+      <div class="card"><h3><span data-pt>Primeira abertura</span><span data-en>First launch</span></h3><p><span data-pt>A app não está notarizada: o macOS mostra «Udjath não aberto». Clique OK, vá a Definições do Sistema → Privacidade e Segurança → Segurança → <strong>Abrir mesmo assim</strong>.</span><span data-en>The app is not notarized: macOS shows “Udjath Not Opened”. Click Done, go to System Settings → Privacy &amp; Security → Security → <strong>Open Anyway</strong>.</span></p></div>
+      <div class="card"><h3><span data-pt>Usar</span><span data-en>Use</span></h3><p><span data-pt>O olho aparece na barra de menu (a app não tem ícone no Dock). Clique nele e escolha a resolução.</span><span data-en>The eye appears in the menu bar (the app has no Dock icon). Click it and choose the resolution.</span></p></div>
+    </div>
+    <p class="sm" style="text-align:center;margin-top:18px"><span data-pt>Desinstalar: saia da app pelo menu e arraste-a para o Lixo.</span><span data-en>Uninstall: quit the app from its menu and drag it to the Trash.</span></p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="card other">
+      <img src="https://lestatpirate.github.io/toth/brand/TothLogo.png" alt="Toth">
+      <div>
+        <h3><span data-pt>Do mesmo autor: Toth</span><span data-en>By the same author: Toth</span></h3>
+        <p><span data-pt>Captura, anota, grava e edita o ecrã no Mac, numa só app, gratuita e livre. <a href="https://lestatpirate.github.io/toth/pt/">Conhecer o Toth</a></span><span data-en>Capture, annotate, record and edit your screen on the Mac, in one free, open-source app. <a href="https://lestatpirate.github.io/toth/">Meet Toth</a></span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="support">
+      <h2>☕ <span data-pt>Gostou do Udjath?</span><span data-en>Enjoying Udjath?</span></h2>
+      <p><span data-pt>O projeto é gratuito e livre, e vai continuar a sê-lo. Se quiser ajudar a mantê-lo, pode apoiar de forma voluntária. Nada na app depende disso.</span><span data-en>The project is free and open, and will stay that way. If you would like to help keep it going, you can support it voluntarily. Nothing in the app depends on it.</span></p>
+      <a class="btn paypal" href="https://paypal.me/lestat013">♥ <span data-pt>Apoiar no PayPal</span><span data-en>Support on PayPal</span></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>© 2026 Alex Felizardo · <a href="https://github.com/LestatPirate/udjath/blob/main/LICENSE">MIT</a> · <a href="https://github.com/LestatPirate/udjath/blob/main/TRADEMARKS.md"><span data-pt>Marcas</span><span data-en>Trademarks</span></a></p>
+    <p><span data-pt>Na mitologia egípcia, o udjat é o Olho de Hórus: símbolo de visão, proteção e do que volta a ficar inteiro. O Udjath cuida do que o seu ecrã mostra.</span><span data-en>In Egyptian mythology, the udjat is the Eye of Horus: a symbol of sight, protection and of what is made whole again. Udjath looks after what your screen shows.</span></p>
+  </div>
+</footer>
+
+<script>
+function keep(l){try{localStorage.setItem('udjath-lang',l)}catch(e){}}
+{{REDIRECT}}
+</script>
+</body>
+</html>

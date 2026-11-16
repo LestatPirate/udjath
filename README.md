@@ -1,62 +1,125 @@
-# MonitorRes
+<div align="center">
 
-Aplicação de barra de menu para macOS que permite mudar a resolução do ecrã (interno ou externo) para as resoluções mais comuns — incluindo resoluções ultrawide como **3440x1440** — com confirmação automática: se não confirmares a nova resolução dentro de alguns segundos, a app reverte sozinha para a resolução anterior (tal como o próprio macOS faz ao mudar de resolução em Definições > Ecrãs).
+<img src="docs/brand/UdjathLogo.png" alt="Udjath" width="120">
 
-Escrita em Python, corre localmente, sem dependências de rede nem serviços externos.
+# U D J A T H
 
-## Funcionalidades
+### A resolução do ecrã, na barra de menu.
+*Display resolution, in the menu bar.*
 
-- Ícone na barra de menu (sem ícone no Dock) com a lista de ecrãs ligados e as respetivas resoluções disponíveis.
-- Lista de resoluções comuns pré-definida (1920x1080, 2560x1440, 3440x1440, 3840x2160, entre outras) — as que o ecrã atual não suporta aparecem desativadas.
-- Expõe resoluções HiDPI/escaladas que o macOS esconde por defeito em Definições > Ecrãs (a mesma técnica usada por ferramentas como o SwitchResX).
-- Confirmação com contagem decrescente após aplicar uma resolução: se não confirmares, reverte automaticamente.
-- Notificações do sistema a confirmar a mudança ou o revert.
+**Um clique para mudar, reversão automática se correr mal. Sem conta, sem rede, sem telemetria.**<br>
+*One click to switch, automatic revert if it goes wrong. No account, no network, no telemetry.*
 
-## Renomear um ecrã (permanente, ao nível do sistema)
+<br>
 
-Cada ecrã tem uma opção **"Renomear este ecrã..."** que grava um nome novo na base de overrides de ecrãs do macOS (`/Library/Displays/Contents/Resources/Overrides/`) — o mesmo mecanismo usado por ferramentas como o SwitchResX. Ao contrário da troca de resolução, isto:
+[![Descarregar](https://img.shields.io/badge/DESCARREGAR-v0.1.0-111111?style=for-the-badge&logo=apple&logoColor=white)](../../releases/latest)
+[![Site](https://img.shields.io/badge/SITE-lestatpirate.github.io%2Fudjath-111111?style=for-the-badge&logo=github&logoColor=white)](https://lestatpirate.github.io/udjath/)
+[![Licença](https://img.shields.io/badge/LICEN%C3%87A-MIT-111111?style=for-the-badge)](LICENSE)
+[![Apoiar](https://img.shields.io/badge/APOIAR-PayPal-0070BA?style=for-the-badge&logo=paypal&logoColor=white)](https://paypal.me/lestat013)
 
-- Pede a palavra-passe de administrador (a app usa `osascript ... with administrator privileges`, que mostra o diálogo de autenticação nativo do macOS — a app nunca vê nem guarda a palavra-passe).
-- Só tem efeito depois de desligares e voltares a ligar o cabo do monitor, ou de terminares sessão — o macOS só lê esta base de dados quando o ecrã liga, não continuamente.
-- É permanente e visível em Definições > Ecrãs, para qualquer app e depois de reiniciar.
+[Português](#português) &nbsp;·&nbsp; [English](#english)
 
-## Limitações conhecidas
+</div>
 
-- Só expõe resoluções que o macOS considera tecnicamente suportadas para o ecrã ligado (nativas ou variantes HiDPI escaladas da resolução nativa). Não força resoluções que o monitor não anuncia como suportadas via EDID — isso não é fiável em nenhum monitor/driver e pode resultar em ecrã preto.
-- Não existe forma de reduzir o tamanho aparente dos elementos da interface (texto, ícones) abaixo do limite físico de 1 ponto = 1 pixel do painel, sem perder nitidez — isto é uma limitação de densidade de pixels do monitor, não de software.
+<br>
 
-## Requisitos
+## Português
 
-- macOS
-- Python 3.9+
+App de barra de menu para macOS que muda a resolução do ecrã (interno ou externo) para as resoluções mais comuns, incluindo ultrawide como **3440x1440**. Depois de mudar, pede confirmação com contagem decrescente: sem resposta, volta sozinha à resolução anterior, como o próprio macOS faz em Definições → Ecrãs.
 
-## Instalação / build
+*Udjath* vem de *udjat*, o Olho de Hórus da mitologia egípcia: símbolo de visão e proteção, e o desenho do ícone da app.
+
+### Funcionalidades
+
+- **Todos os ecrãs num menu**, com a resolução atual assinalada. A app não tem ícone no Dock.
+- **Resoluções comuns pré-definidas** (1920x1080, 2560x1440, 3440x1440, 3840x2160, entre outras). As que o ecrã ligado não suporta aparecem desativadas.
+- **Modos HiDPI escondidos**: mostra as resoluções escaladas que o macOS não apresenta por omissão.
+- **Reversão automática**: 15 segundos para confirmar a nova resolução; senão, volta à anterior.
+- **Renomear um ecrã** ao nível do sistema (ver abaixo).
+- **Ícones à escolha** no menu **Ícone**: o ícone da app (Clássico, Ultrawide ou Turquesa) e o da barra de menu (Olho de Hórus, com pupila ou com ecrã).
+- **100 % local**: não faz pedidos de rede.
+
+<div align="center">
+<img src="docs/brand/UdjathLogo.png" alt="Clássico" width="96"> &nbsp; <img src="docs/brand/AppIcon-Ultrawide.png" alt="Ultrawide" width="96"> &nbsp; <img src="docs/brand/AppIcon-Turquesa.png" alt="Turquesa" width="96">
+</div>
+
+### Instalação
+
+1. Descarregue o zip da [última versão](../../releases/latest), descomprima e arraste `Udjath.app` para Aplicações. Apple Silicon e Intel.
+2. A app não está notarizada: na primeira abertura o macOS mostra «Udjath não aberto». Clique OK e vá a Definições do Sistema → Privacidade e Segurança → Segurança → **Abrir mesmo assim**.
+3. O olho aparece na barra de menu. Clique nele e escolha a resolução.
+
+### Renomear um ecrã
+
+Cada ecrã tem a opção **«Renomear este ecrã...»**, que grava um nome novo na base de *overrides* de ecrãs do macOS (`/Library/Displays/Contents/Resources/Overrides/`). Ao contrário da troca de resolução, isto:
+
+- Pede a palavra-passe de administrador pelo diálogo nativo do macOS (`osascript ... with administrator privileges`). A app nunca vê nem guarda a palavra-passe.
+- Só tem efeito depois de desligar e voltar a ligar o cabo do monitor, ou de terminar sessão.
+- É permanente e visível em Definições → Ecrãs.
+
+### Limitações
+
+- Só mostra resoluções que o macOS considera suportadas pelo ecrã ligado (nativas ou variantes HiDPI escaladas). Não força modos que o monitor não anuncia via EDID.
+- A interface da app está em português.
+
+### Do mesmo autor
+
+**[Toth](https://lestatpirate.github.io/toth/pt/)**: captura, anota, grava e edita o ecrã no Mac, numa só app, gratuita e livre.
+
+<br>
+
+## English
+
+A macOS menu bar app that switches the display resolution (built-in or external) to the most common resolutions, including ultrawide ones such as **3440x1440**. After a change it asks for confirmation with a countdown: with no answer, it returns to the previous resolution by itself, as macOS does in Settings → Displays.
+
+*Udjath* comes from *udjat*, the Eye of Horus of Egyptian mythology: a symbol of sight and protection, and the drawing in the app icon.
+
+### Features
+
+- **Every display in one menu**, with the current resolution checked. The app has no Dock icon.
+- **Common resolutions built in** (1920x1080, 2560x1440, 3440x1440, 3840x2160, among others). Those the connected display does not support are shown disabled.
+- **Hidden HiDPI modes**: shows the scaled resolutions macOS does not present by default.
+- **Automatic revert**: 15 seconds to confirm the new resolution; otherwise it goes back.
+- **Rename a display** at system level, through the macOS administrator password dialog. It takes effect after reconnecting the monitor or logging out.
+- **Your choice of icon** in the **Ícone** menu: the app icon (Classic, Ultrawide or Turquoise) and the menu bar icon.
+- **100% local**: it makes no network requests.
+
+### Install
+
+1. Download the zip from the [latest release](../../releases/latest), unzip and drag `Udjath.app` to Applications. Apple Silicon and Intel.
+2. The app is not notarized: on first launch macOS shows “Udjath Not Opened”. Click Done and go to System Settings → Privacy & Security → Security → **Open Anyway**.
+3. The eye appears in the menu bar. Click it and choose the resolution.
+
+### Limitations
+
+- It only shows resolutions macOS considers supported by the connected display. It does not force modes the monitor does not advertise through EDID.
+- The app's interface is in Portuguese.
+
+### By the same author
+
+**[Toth](https://lestatpirate.github.io/toth/)**: capture, annotate, record and edit your screen on the Mac, in one free, open-source app.
+
+<br>
+
+## Desenvolvimento · Development
+
+Python 3.9+ com PyObjC, [rumps](https://github.com/jaredks/rumps) e py2app.
 
 ```bash
-git clone https://github.com/LestatPirate/MonitorRes.git
-cd MonitorRes
-python3 -m venv venv
-./venv/bin/pip install -r requirements.txt
-./venv/bin/python3 setup.py py2app
+git clone https://github.com/LestatPirate/udjath.git
+cd udjath
+./scripts/build-app.sh          # cria a venv, gera dist/Udjath.app e o zip
+./venv/bin/python3 app.py       # correr sem empacotar
 ```
 
-Isto gera `dist/MonitorRes.app`. Como não está assinado, da primeira vez que abrires o macOS vai bloquear — clica com o botão direito no `.app` → **Abrir** → **Abrir** (só é preciso uma vez). Depois podes copiar o `.app` para `/Applications`.
+- [`app.py`](app.py): a app de barra de menu.
+- [`display_manager.py`](display_manager.py): lista ecrãs e resoluções e aplica uma nova com o CoreGraphics (`CGConfigureDisplayWithDisplayMode`).
+- [`display_naming.py`](display_naming.py): gera e instala o plist de *override* do nome do ecrã.
+- [`confirm_dialog.py`](confirm_dialog.py): diálogos `NSAlert`, com a contagem decrescente da reversão.
+- [`icon_manager.py`](icon_manager.py): escolha dos ícones e aplicação à app a correr e ao pacote `.app`. Os SVG de origem estão em `icons/src` e convertem-se com [`tools/make_icons.py`](tools/make_icons.py).
+- [`known_resolutions.py`](known_resolutions.py): as resoluções mostradas no menu.
+- [`scripts/build-site.py`](scripts/build-site.py): gera o site (`docs/`) a partir de `scripts/site/index.src.html`. Correr depois de publicar a release.
 
-Para correr diretamente sem empacotar (útil durante desenvolvimento):
+## Licença · License
 
-```bash
-./venv/bin/python3 app.py
-```
-
-## Como funciona
-
-- [`display_manager.py`](display_manager.py) — usa o CoreGraphics (via PyObjC/Quartz) para listar ecrãs e resoluções, e para aplicar uma nova resolução com `CGConfigureDisplayWithDisplayMode`.
-- [`display_naming.py`](display_naming.py) — gera e instala o plist de override do nome do ecrã, pedindo autorização de administrador via `osascript`.
-- [`confirm_dialog.py`](confirm_dialog.py) — diálogos com `NSAlert`: confirmação com `NSTimer` (contagem decrescente com revert automático) e um prompt de texto simples para o nome novo do ecrã.
-- [`known_resolutions.py`](known_resolutions.py) — lista de resoluções comuns mostradas no menu.
-- [`app.py`](app.py) — a app de barra de menu (usa [rumps](https://github.com/jaredks/rumps)).
-- [`setup.py`](setup.py) — script de build (`py2app`) para gerar o `.app` final.
-
-## Licença
-
-[MIT](LICENSE)
+[MIT](LICENSE) © 2026 Alex Felizardo. Nome e logótipo: ver [TRADEMARKS.md](TRADEMARKS.md).

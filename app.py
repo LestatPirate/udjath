@@ -1,4 +1,4 @@
-"""Menu bar app: switch monitor resolution (internal or external),
+"""Udjath — menu bar app: switch monitor resolution (internal or external),
 with a countdown confirmation that auto-reverts on timeout, like macOS's
 own display-change dialog.
 """
@@ -9,14 +9,16 @@ import rumps
 
 import display_manager as dm
 import display_naming as dn
+import icon_manager as icons
 from confirm_dialog import confirm_resolution, prompt_text
 from known_resolutions import KNOWN_RESOLUTIONS
 
 
-class ResolutionSwitcherApp(rumps.App):
+class UdjathApp(rumps.App):
 
     def __init__(self):
-        super().__init__("⧉", quit_button="Sair")
+        super().__init__("Udjath", icon=icons.menubar_icon_path(), template=True, quit_button="Sair")
+        icons.apply_app_icon()
         self.menu.clear()
         self.rebuild_menu()
 
@@ -66,8 +68,40 @@ class ResolutionSwitcherApp(rumps.App):
             self.menu.add(None)
 
         self.menu.add(rumps.MenuItem("Atualizar lista de ecrãs", callback=lambda _: self.rebuild_menu()))
+        self.menu.add(self._build_icon_menu())
         self.menu.add(None)
         self.menu.add(rumps.MenuItem("Sair", callback=rumps.quit_application))
+
+    def _build_icon_menu(self) -> rumps.MenuItem:
+        menu = rumps.MenuItem("Ícone")
+        app_menu = rumps.MenuItem("Ícone da app")
+        for icon_id, title in icons.APP_ICONS:
+            item = rumps.MenuItem(title, callback=self._make_app_icon_handler(icon_id))
+            item.state = int(icon_id == icons.current_app_icon())
+            app_menu.add(item)
+        menubar_menu = rumps.MenuItem("Ícone da barra de menu")
+        for icon_id, title in icons.MENUBAR_ICONS:
+            item = rumps.MenuItem(title, callback=self._make_menubar_icon_handler(icon_id))
+            item.state = int(icon_id == icons.current_menubar_icon())
+            menubar_menu.add(item)
+        menu.add(app_menu)
+        menu.add(menubar_menu)
+        return menu
+
+    def _make_app_icon_handler(self, icon_id: str):
+        def handler(_sender):
+            icons.select_app_icon(icon_id)
+            self.rebuild_menu()
+
+        return handler
+
+    def _make_menubar_icon_handler(self, icon_id: str):
+        def handler(_sender):
+            icons.select_menubar_icon(icon_id)
+            self.icon = icons.menubar_icon_path(icon_id)
+            self.rebuild_menu()
+
+        return handler
 
     def _make_switch_handler(self, display_id: int, width: int, height: int):
         def handler(_sender):
@@ -150,4 +184,4 @@ class ResolutionSwitcherApp(rumps.App):
 
 
 if __name__ == "__main__":
-    ResolutionSwitcherApp().run()
+    UdjathApp().run()
